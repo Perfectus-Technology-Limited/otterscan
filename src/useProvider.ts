@@ -11,8 +11,8 @@ import { providers } from "ethers";
 
 export const DEFAULT_ERIGON_URL = "http://127.0.0.1:8545";
 
-const rpcUrl =
-  "https://2ec56128-a23d-40b9-8d27-6fe6ac12db29-dev.e1-us-east-azure.choreoapis.dev/xvol/blockchain-poa-2/restpow2-5f5/1.0.0/";
+const rpcUrl = 'http://127.0.0.1:8545/'
+  // "https://2ec56128-a23d-40b9-8d27-6fe6ac12db29-dev.e1-us-east-azure.choreoapis.dev/xvol/blockchain-poa-2/restpow2-5f5/1.0.0/";
 const connection = {
   url: rpcUrl,
   headers: {

@@ -11,14 +11,14 @@ const ResultHeader: React.FC<ResultHeaderProps> = ({
   feeDisplayToggler,
 }) => (
   <div className="grid grid-cols-12 gap-x-1 border-t border-b border-gray-200 bg-gray-100 px-2 py-2 text-sm font-bold text-gray-500">
-    <div className="col-span-2">Txn Hash</div>
-    <div>Method</div>
+    <div className="col-span-4">Txn Hash</div>
+    {/* <div>Method</div>
     <div>Block</div>
-    <div>Age</div>
-    <div className="col-span-2 ml-1">From</div>
-    <div className="col-span-2 ml-1">To</div>
-    <div className="col-span-2">Value</div>
-    <div>
+    <div>Age</div> */}
+    <div className="col-span-3 ml-1">From</div>
+    <div className="col-span-3 ml-1">To</div>
+    <div className="col-span-2">Block Number</div>
+    {/* <div>
       <button
         className="text-link-blue hover:text-link-blue-hover"
         onClick={feeDisplayToggler}
@@ -27,7 +27,7 @@ const ResultHeader: React.FC<ResultHeaderProps> = ({
         {feeDisplay === FeeDisplay.TX_FEE_USD && "Txn Fee (USD)"}
         {feeDisplay === FeeDisplay.GAS_PRICE && "Gas Price"}
       </button>
-    </div>
+    </div> */}
   </div>
 );
 

@@ -7,7 +7,7 @@ import TransactionDirection, {
   Direction,
   Flags,
 } from "../components/TransactionDirection";
-import TransactionValue from "../components/TransactionValue";
+// import TransactionValue from "../components/TransactionValue";
 import TransactionItemFiatFee from "./TransactionItemFiatFee";
 import { ProcessedTransaction } from "../types";
 import { FeeDisplay } from "./useFeeToggler";
@@ -22,6 +22,8 @@ type TransactionItemProps = {
   selectedAddress?: string;
   feeDisplay: FeeDisplay;
 };
+console.log('fuck');
+
 
 const TransactionItem: React.FC<TransactionItemProps> = ({
   tx,
@@ -47,32 +49,30 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
     }
   }
 
-  const flash = tx.gasPrice.isZero() && sendsToMiner;
+  // const flash = tx.gasPrice.isZero() && sendsToMiner;
 
   return (
     <BlockNumberContext.Provider value={tx.blockNumber}>
       <div
-        className={`grid grid-cols-12 items-baseline gap-x-1 border-t border-gray-200 text-sm ${
-          flash
-            ? "bg-amber-100 hover:bg-amber-200"
-            : "hover:bg-skin-table-hover"
-        } px-2 py-3`}
+        className={`grid grid-cols-12 items-baseline gap-x-1 border-t border-gray-200 text-sm `
+        
+      }
       >
-        <span className="col-span-2">
-          <TransactionLink txHash={tx.hash} fail={tx.status === 0} />
+        <span className="col-span-4">
+          <TransactionLink txHash={tx.hash} fail={true} />
         </span>
-        {tx.to !== null ? <MethodName data={tx.data} /> : <span></span>}
-        <span>
+        {/* {tx.to !== null ? <MethodName data={tx.data} /> : <span></span>} */}
+        {/* <span>
           <BlockLink blockTag={tx.blockNumber} />
-        </span>
-        <TimestampAge timestamp={tx.timestamp} />
-        <span className="col-span-2 flex items-baseline justify-between space-x-2 pr-2">
+        </span> */}
+        {/* <TimestampAge timestamp={tx.timestamp} /> */}
+        <span className="col-span-3 flex items-baseline justify-between space-x-2 pr-2">
           <span className="truncate">
             {tx.from && (
               <TransactionAddress
                 address={tx.from}
                 selectedAddress={selectedAddress}
-                miner={tx.miner === tx.from}
+                miner={tx.from === tx.from}
               />
             )}
           </span>
@@ -84,20 +84,20 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
           </span>
         </span>
         <span
-          className="col-span-2 flex items-baseline"
-          title={tx.to ?? tx.createdContractAddress}
+          className="col-span-3 flex items-baseline"
+          title={tx.to ?? tx.from}
         >
           <span className="truncate">
             {tx.to ? (
               <TransactionAddress
                 address={tx.to}
                 selectedAddress={selectedAddress}
-                miner={tx.miner === tx.to}
+                miner={tx.to === tx.to}
                 showCodeIndicator
               />
             ) : (
               <TransactionAddress
-                address={tx.createdContractAddress!}
+                address={tx.from!}
                 selectedAddress={selectedAddress}
                 creation
                 showCodeIndicator
@@ -106,15 +106,15 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
           </span>
         </span>
         <span className="col-span-2 truncate">
-          <TransactionValue value={tx.value} />
+          {tx.blockNumber}
         </span>
-        <span className="truncate font-balance text-xs text-gray-500">
-          {feeDisplay === FeeDisplay.TX_FEE && formatValue(tx.fee, 18)}
+        {/* <span className="truncate font-balance text-xs text-gray-500">
+          {feeDisplay === FeeDisplay.TX_FEE && 0}
           {feeDisplay === FeeDisplay.TX_FEE_USD && (
-            <TransactionItemFiatFee blockTag={tx.blockNumber} fee={tx.fee} />
+            <TransactionItemFiatFee blockTag={tx.blockNumber} />
           )}
-          {feeDisplay === FeeDisplay.GAS_PRICE && formatValue(tx.gasPrice, 9)}
-        </span>
+          {feeDisplay === FeeDisplay.GAS_PRICE && 0}
+        </span> */}
       </div>
     </BlockNumberContext.Provider>
   );

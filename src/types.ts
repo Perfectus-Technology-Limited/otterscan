@@ -23,6 +23,8 @@ export type ProcessedTransaction = {
   gasPrice: BigNumber;
   data: string;
   status: number;
+  tx: string,
+  __v: number
 };
 
 export type TransactionChunk = {

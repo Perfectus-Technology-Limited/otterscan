@@ -17,6 +17,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { ProcessedTransaction } from "../../types";
 import { useAddressBalance, useContractCreator } from "../../useErigonHooks";
 import { BlockNumberContext } from "../../useBlockTagContext";
+import axios from "axios";
 
 const AddressTransactionResults: FC<AddressAwareComponentProps> = ({
   address,
@@ -93,6 +94,34 @@ const AddressTransactionResults: FC<AddressAwareComponentProps> = ({
   const balance = useAddressBalance(provider, address);
   const creator = useContractCreator(provider, address);
 
+  const [transactions, setTransactions] = useState<ProcessedTransaction[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://emuwwwehnh.us-east-1.awsapprunner.com/transactions",
+          {
+            params: {
+              address: address,
+              page: 1,
+              limit: 10,
+            },
+          }
+        );
+        const data = response.data;
+        setTransactions(data);
+        console.log('data', data);
+        
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      }
+    };
+
+    if (address) {
+      fetchData();
+    }
+  }, [address]);
+
   return (
     <ContentFrame tabs>
       <StandardSelectionBoundary>
@@ -121,9 +150,9 @@ const AddressTransactionResults: FC<AddressAwareComponentProps> = ({
           feeDisplay={feeDisplay}
           feeDisplayToggler={feeDisplayToggler}
         />
-        {page ? (
+        {transactions.length > 0 ? (
           <>
-            {page.map((tx) => (
+            {transactions.map((tx) => (
               <TransactionItem
                 key={tx.hash}
                 tx={tx}
