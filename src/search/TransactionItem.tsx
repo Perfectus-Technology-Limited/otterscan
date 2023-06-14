@@ -22,8 +22,6 @@ type TransactionItemProps = {
   selectedAddress?: string;
   feeDisplay: FeeDisplay;
 };
-console.log('fuck');
-
 
 const TransactionItem: React.FC<TransactionItemProps> = ({
   tx,

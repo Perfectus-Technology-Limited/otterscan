@@ -9,7 +9,16 @@ import { MIN_API_LEVEL } from "./params";
 
 import { providers } from "ethers";
 
+// import dotenv from 'dotenv';
+// dotenv.config();
+
 export const DEFAULT_ERIGON_URL = "http://127.0.0.1:8545";
+
+// const apiUrl = process.env.REACT_APP_RPC_URL;
+// const apiKey = process.env.REACT_APP_API_KEY;
+
+// console.log('apiUrl', apiUrl);
+
 
 const rpcUrl = 'http://127.0.0.1:8545/'
   // "https://2ec56128-a23d-40b9-8d27-6fe6ac12db29-dev.e1-us-east-azure.choreoapis.dev/xvol/blockchain-poa-2/restpow2-5f5/1.0.0/";

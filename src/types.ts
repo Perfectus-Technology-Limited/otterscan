@@ -1,5 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber";
-import { Log } from "@ethersproject/providers";
+import { Log, TransactionResponse } from "@ethersproject/providers";
 
 export enum ConnectionStatus {
   CONNECTING,
@@ -23,7 +23,7 @@ export type ProcessedTransaction = {
   gasPrice: BigNumber;
   data: string;
   status: number;
-  tx: string,
+  tx: TransactionResponse,
   __v: number
 };
 

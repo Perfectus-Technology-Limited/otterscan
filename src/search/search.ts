@@ -23,6 +23,8 @@ export const rawToProcessed = (provider: JsonRpcProvider, _rawRes: any) => {
       const _rawReceipt = _rawRes.receipts[i];
       const _receipt = provider.formatter.receipt(_rawReceipt);
       return {
+        tx: t, // Add the 'tx' property
+        __v: 0, // Add the '__v' property
         blockNumber: t.blockNumber!,
         timestamp: provider.formatter.number(_rawReceipt.timestamp),
         idx: _receipt.transactionIndex,
