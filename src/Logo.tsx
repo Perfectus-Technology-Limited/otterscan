@@ -1,6 +1,6 @@
 import React from "react";
 // @ts-expect-error
-import Otter from "./otter.png?w=128&h=128&webp";
+import Otter from "./wso2_main.png?w=128&h=128&webp";
 
 const Logo: React.FC = () => (
   <div className="flex cursor-default items-center justify-center space-x-4 font-title text-6xl font-bold text-link-blue">
@@ -12,7 +12,7 @@ const Logo: React.FC = () => (
       alt="An otter scanning"
       title="An otter scanning"
     />
-    <span>Otterscan</span>
+    <span>WSO2</span>
   </div>
 );
 

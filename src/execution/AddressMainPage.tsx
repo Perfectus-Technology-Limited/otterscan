@@ -61,9 +61,9 @@ const AddressMainPage: React.FC<AddressMainPageProps> = () => {
 
   useEffect(() => {
     if (isENS || checksummedAddress === undefined) {
-      document.title = `Address ${addressOrName} | Otterscan`;
+      document.title = `Address ${addressOrName} | WSO2`;
     } else {
-      document.title = `Address ${checksummedAddress} | Otterscan`;
+      document.title = `Address ${checksummedAddress} | WSO2`;
     }
   }, [addressOrName, checksummedAddress, isENS]);
 

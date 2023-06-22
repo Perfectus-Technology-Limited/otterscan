@@ -7,7 +7,7 @@ import SourcifyMenu from "./SourcifyMenu";
 import { RuntimeContext } from "./useRuntime";
 import { useGenericSearch } from "./search/search";
 // @ts-expect-error
-import Otter from "./otter.png?w=64&h=64&webp";
+import Otter from "./wso2_main.png?w=64&h=64&webp";
 
 const CameraScanner = lazy(() => import("./search/CameraScanner"));
 
@@ -30,7 +30,7 @@ const Header: FC = () => {
               alt="An otter scanning"
               title="An otter scanning"
             />
-            <span>Otterscan</span>
+            <span>WSO2</span>
           </div>
         </Link>
         <div className="flex items-baseline space-x-3">

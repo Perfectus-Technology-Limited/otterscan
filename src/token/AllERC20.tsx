@@ -13,7 +13,7 @@ const AllERC20: FC = () => {
     mapper
   );
 
-  document.title = `ERC20 Tokens | Otterscan`;
+  document.title = `ERC20 Tokens | WSO2`;
 
   return (
     <GenericContractSearchResult

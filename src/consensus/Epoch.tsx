@@ -27,7 +27,7 @@ const Epoch: FC = () => {
   const epochAsNumber = parseInt(epochNumber);
   useEffect(() => {
     if (!isNaN(epochAsNumber)) {
-      document.title = `Epoch #${epochAsNumber} | Otterscan`;
+      document.title = `Epoch #${epochAsNumber} | WSO2`;
     }
   }, [epochAsNumber]);
 

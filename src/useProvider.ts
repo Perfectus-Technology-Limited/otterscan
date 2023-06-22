@@ -1,36 +1,86 @@
 import { useEffect, useState } from "react";
 import {
   JsonRpcProvider,
-  JsonRpcBatchProvider,
   WebSocketProvider,
 } from "@ethersproject/providers";
 import { ConnectionStatus } from "./types";
-import { MIN_API_LEVEL } from "./params";
 
 import { providers } from "ethers";
-
-// import dotenv from 'dotenv';
-// dotenv.config();
+import axios from "axios";
+import * as qs from "qs";
 
 export const DEFAULT_ERIGON_URL = "http://127.0.0.1:8545";
 
-// const apiUrl = process.env.REACT_APP_RPC_URL;
-// const apiKey = process.env.REACT_APP_API_KEY;
+const TOKEN_REFRESH_URL = "https://sts.choreo.dev/oauth2/token";
+const API_KEY = 'Y1lKQmhQREFNV25DeGJpUXRSX1VzOUJDZTJrYToxaDlGQ0FVMTlKVl9lMkljT0xKbUV3MXdYOUlh'
 
-// console.log('apiUrl', apiUrl);
+const rpcUrl = 
+// 'http://127.0.0.1:8545/'
+'https://2ec56128-a23d-40b9-8d27-6fe6ac12db29-dev.e1-us-east-azure.choreoapis.dev/xvol/blockchain-poa-2/restpow2-5f5/1.0.0/'
 
+const getAccessToken = async () => {
+  const payload = qs.stringify({
+    grant_type: "client_credentials"
+  });
 
-const rpcUrl = 'http://127.0.0.1:8545/'
-  // "https://2ec56128-a23d-40b9-8d27-6fe6ac12db29-dev.e1-us-east-azure.choreoapis.dev/xvol/blockchain-poa-2/restpow2-5f5/1.0.0/";
+  const config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: TOKEN_REFRESH_URL,
+    headers: {
+      Authorization: `Basic ${API_KEY}`,
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    data: payload
+  };
+
+  const response = await axios(config);
+  const accessToken = response.data.access_token;
+  return accessToken;
+  
+}
+
 const connection = {
   url: rpcUrl,
   headers: {
-    "API-Key":
-      "eyJraWQiOiJnYXRld2F5X2NlcnRpZmljYXRlX2FsaWFzIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI4ZWM5YWJjYi03ZmU1LTQ0M2YtYmZlNy1jMDJkZDI0MmMyY2NAY2FyYm9uLnN1cGVyIiwiaXNzIjoiaHR0cHM6XC9cL3N0cy5jaG9yZW8uZGV2OjQ0M1wvb2F1dGgyXC90b2tlbiIsImtleXR5cGUiOiJQUk9EVUNUSU9OIiwic3Vic2NyaWJlZEFQSXMiOlt7InN1YnNjcmliZXJUZW5hbnREb21haW4iOm51bGwsIm5hbWUiOiJCbG9ja2NoYWluIFBPQSAyIC0gcmVzdHBvdzIgNWY1IiwiY29udGV4dCI6IlwvMmVjNTYxMjgtYTIzZC00MGI5LThkMjctNmZlNmFjMTJkYjI5XC94dm9sXC9ibG9ja2NoYWluLXBvYS0yXC9yZXN0cG93Mi01ZjVcLzEuMC4wIiwicHVibGlzaGVyIjoiY2hvcmVvX3Byb2RfYXBpbV9hZG1pbiIsInZlcnNpb24iOiIxLjAuMCIsInN1YnNjcmlwdGlvblRpZXIiOm51bGx9XSwiZXhwIjoxNjg2NjMyMDI3LCJ0b2tlbl90eXBlIjoiSW50ZXJuYWxLZXkiLCJpYXQiOjE2ODY2MzE0MjcsImp0aSI6ImQ4OGJiOWIxLTE4NGUtNDBlYS04NzgzLTAzYzBkYzNhNjZkMyJ9.TmqZbJp3qJwgyQL0Jr0-P4JQm0Ecjzpav0lrG9yVDQ7IC0fWv_Yj7MaBe4Vhc7TCfGRFVv6TzaaVfBrbRF0HohbtdxH_ozyse5QFj7trqhQTu0SG6h3OEGL_qtAgn32wilQCzTfzXR7RRNiM3QxvJECEMA4RGCyYDSfO0261Hjk0BG7Qow4WPO2OuuDWZUmESjvH8a7Hicu8WIXa1iDV9tddZ5ro-nkDJz84H4D-sGdHbFIJZOzrY156g-jHVuOaq9kK9PkjYz0iNfeqVZgF7RqUg8zhC8lQUdvIoHpiVjuSZLPg_ggg0HZmVEr9wkcKhuK5Li0-7XL-YNpuq9Xqx4QytvMEwZui65fpZ2vFw811MA75D60gIQyPHqVFBXWCjqbIOgASL_S284GouZQ1WV_2BeUgk_VtZ6mCfDq52fRq43uybXhXSyxcuDl13zs15tfyG-S79VPWwuHaOAsq8ova8Q5yS74hAq8FNLdME5sSXG2QcQ9uLYFrCzuVfYz8_ANAlK-brh1GoHp4O3_VBoF8NjR52iZK6ZBIQ_jtlb9MnDO1Mb4ENCFlrTVMyA1Py3IgZuUp5dsNJycAZ5xE70LgG0COWBbZwH6QTYoi4tsKL1-Ujcqml77Bh8f9TeQpyaXOTphKjnr_dF5yJkU-QK08_UHepE9I8aNYkp_w4Fs"
+    'Authorization': 'Bearer eyJ4NXQiOiJZV1kxTm1Sa1pHSTVNekU0T0RCbFpEUmlNV0k0WldKbE5qRXhaV1ZpWmpFek1tTm1ORFUzWVEiLCJraWQiOiJNV1E1TldVd1lXWmlNbU16WlRJek16ZG1NekJoTVdNNFlqUXlNalZoTldNNE5qaGtNR1JtTnpGbE1HSTNaRGxtWW1Rek5tRXlNemhoWWpCaU5tWmhZd19SUzI1NiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJhNmVkNDcxOS04N2JkLTRmNTEtODc4ZS0xYmNhZDE5ZjJkOTQiLCJhdXQiOiJBUFBMSUNBVElPTiIsImF1ZCI6ImNZSkJoUERBTVduQ3hiaVF0Ul9VczlCQ2Uya2EiLCJuYmYiOjE2ODY3NTk1MDQsImF6cCI6ImNZSkJoUERBTVduQ3hiaVF0Ul9VczlCQ2Uya2EiLCJzY29wZSI6ImRlZmF1bHQiLCJvcmdhbml6YXRpb24iOnsidXVpZCI6IjJlYzU2MTI4LWEyM2QtNDBiOS04ZDI3LTZmZTZhYzEyZGIyOSJ9LCJpc3MiOiJodHRwczpcL1wvc3RzLmNob3Jlby5kZXY6NDQzXC9vYXV0aDJcL3Rva2VuIiwiZXhwIjoxNjg3Mjg1MTA0LCJpYXQiOjE2ODY3NTk1MDQsImp0aSI6IjE3ZWM2MGQ1LWYzNDEtNGY5YS1hNjJhLTc5ZWYwNDgyNTNiZCJ9.Siuw1oB5GKNpL9nnunMLPRsjKR-gKZeV77mlfhHy58ganUz--pT5lbaStIIVul5nVud0Xnhihd2XcqAaGzPCu0wtSYQ43BIr0Ahlr2wzo_Kf8e1r63fd2YkOFZgK0BVIXKVgVy5hgnIO502P7kQFWki2T918f-tiKGmgKa5q5zKCaBw8VS8L-yLPBd_4xo4to2aAAkg8n9zPx8Rg_vRdce6zu4-EDOl687FbnBSxE8cuv7Qn4ao7bGAyHaztZYj7ktOqH4ILJXULHxnb_40JgXM_h8kl4OOspjjqjX1U5A3rnwjupG-UGSQOmOcv9r_obpX3xGaXvplTGnW6ihgAteHNeTiZz4SEcTIiyADp3N03Ma0G9dfyNRb1ZnFL92uZTgVKB4G8HrZv-62fW7KkRoSDIPNAmjvgUV1U36xdB_hHql3tp1HsrULRDgT6-8IS7LKpAL49uBW9R1hhXzYlKdJJlwvifuyIZ8o2RRQ3tTnGFE0VNKhXw9RkLYKr8PuLxjSTkcJqUy90fpQQ7-J0BjieWjLxOhRm566GJRmP-cK14cPMh4AYiGbb78OlxRsElPd6lwf6G3HUQk3uBAMxBF3FzK-muGFTujv6CSN8Ms4QLHNXcZBK-kY1ousi7vwFRtvyb0LuBxir9U0UKFN0Pkh18mrKEabUth9ulWbkyds'
   }
 };
 
 const Wso2provider = new providers.JsonRpcProvider(connection);
+
+let ACCESS_TOKEN = '';
+
+// const connection = {
+//   url: rpcUrl,
+//   headers: {
+//     Authorization: ''
+//   }
+// };
+
+
+// let Wso2provider: providers.JsonRpcProvider | null = null;
+
+const main = async () => {
+  let accessToken = await getAccessToken();
+  console.log('ACCESS_TOKEN', accessToken);
+  
+  
+  ACCESS_TOKEN = accessToken;
+
+  // if (ACCESS_TOKEN) {
+  //   connection.headers.Authorization = `Bearer ${ACCESS_TOKEN}`;
+  // }
+};
+
+main().then(() => {
+  console.log('ACCESS_TOKEN outside', ACCESS_TOKEN);
+  
+  // connection.headers.Authorization = `Bearer ${ACCESS_TOKEN}`;
+  // Wso2provider = new providers.JsonRpcProvider(connection);
+  
+  // console.log('Wso2provider', Wso2provider);
+});
 
 export const useProvider = (
   erigonURL?: string
@@ -49,6 +99,7 @@ export const useProvider = (
   }
 
   const [provider, setProvider] = useState<JsonRpcProvider | undefined>();
+
   useEffect(() => {
     if (erigonURL === undefined) {
       setConnStatus(ConnectionStatus.NOT_ETH_NODE);
@@ -56,15 +107,17 @@ export const useProvider = (
       return;
     }
     setConnStatus(ConnectionStatus.CONNECTING);
-
+  
     const tryToConnect = async () => {
-      let provider: JsonRpcProvider;
+      let provider: JsonRpcProvider | WebSocketProvider;
+  
       if (erigonURL?.startsWith("ws://") || erigonURL?.startsWith("wss://")) {
         provider = new WebSocketProvider(erigonURL);
       } else {
-        provider = Wso2provider;
+        const wso2Provider: any = await Wso2provider; // Await the promise and cast it to 'any'
+        provider = wso2Provider as JsonRpcProvider; // Cast 'any' to 'JsonRpcProvider'
       }
-
+  
       // Check if it is at least a regular ETH node
       let blockNumber: number = 0;
       try {
@@ -77,10 +130,12 @@ export const useProvider = (
         setProvider(undefined);
         return;
       }
-
     };
+  
     tryToConnect();
   }, [erigonURL]);
+  
 
   return [connStatus, provider];
 };
+

@@ -22,7 +22,7 @@ const Home: FC = () => {
   const slotTime = useSlotTimestamp(finalizedSlotNumber);
   const [isScanning, setScanning] = useState<boolean>(false);
 
-  document.title = "Home | Otterscan";
+  document.title = "Home | WSO2";
 
   return (
     <div className="flex grow flex-col items-center pb-5">
@@ -64,21 +64,6 @@ const Home: FC = () => {
           Search
         </button>
       </form>
-      <div className="text-lg font-bold text-link-blue hover:text-link-blue-hover">
-        {provider?.network.chainId !== 11155111 && (
-          <NavLink to="/special/london">
-            <div className="flex items-baseline space-x-2 text-orange-500 hover:text-orange-700 hover:underline">
-              <span>
-                <FontAwesomeIcon icon={faBurn} />
-              </span>
-              <span>Check out the special dashboard for EIP-1559</span>
-              <span>
-                <FontAwesomeIcon icon={faBurn} />
-              </span>
-            </div>
-          </NavLink>
-        )}
-      </div>
       {latestBlock && (
         <NavLink
           className="mt-5 flex flex-col items-center space-y-1 text-sm text-gray-500 hover:text-link-blue"

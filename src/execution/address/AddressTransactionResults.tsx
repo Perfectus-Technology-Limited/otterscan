@@ -18,10 +18,25 @@ import { ProcessedTransaction } from "../../types";
 import { useAddressBalance, useContractCreator } from "../../useErigonHooks";
 import { BlockNumberContext } from "../../useBlockTagContext";
 import axios from "axios";
+import { getTokenBalanceByWalletAddress } from '../../Blockchain/web3.services'
+import { configs } from "../../Blockchain/web3.config";
 
 const AddressTransactionResults: FC<AddressAwareComponentProps> = ({
   address,
 }) => {
+  interface TokenDetailsResponse {
+    balance: number;
+  }
+
+ 
+  const contractAddress: string = configs.contractAddress as string;
+
+  type SetIsTokenBalanceLoading = (isLoading: boolean) => void;
+  type SetTokenBalance = (data: TokenDetailsResponse) => void;
+
+  const [isTokenBalanceLoading, setIsTokenBalanceLoading]: [boolean, SetIsTokenBalanceLoading] = useState(false);
+  const [tokenBalance, SetTokenBalance]: [TokenDetailsResponse, SetTokenBalance] = useState(null);
+
   const { provider } = useContext(RuntimeContext);
   const [feeDisplay, feeDisplayToggler] = useFeeToggler();
 
@@ -34,6 +49,33 @@ const AddressTransactionResults: FC<AddressAwareComponentProps> = ({
   const hash = searchParams.get("h");
 
   const [controller, setController] = useState<SearchController>();
+
+  useEffect(() => {
+    if (address) {
+      fetchTokenBalance()
+    }
+  }, [address])
+
+  const fetchTokenBalance = async () => {
+    console.log('tokenDetailsResponse>1');
+    
+    setIsTokenBalanceLoading(true)
+    try {
+      if (provider) {
+        const tokenDetailsResponse = await getTokenBalanceByWalletAddress(contractAddress, address, provider)
+        SetTokenBalance(tokenDetailsResponse)
+        setIsTokenBalanceLoading(false)
+      }
+        
+        
+        
+        
+        
+    } catch (error) {
+      setIsTokenBalanceLoading(false)
+    }
+}
+
   useEffect(() => {
     if (!provider || !address) {
       return;
@@ -126,9 +168,9 @@ const AddressTransactionResults: FC<AddressAwareComponentProps> = ({
     <ContentFrame tabs>
       <StandardSelectionBoundary>
         <BlockNumberContext.Provider value="latest">
-          {balance && (
+          {tokenBalance && (
             <InfoRow title="Balance">
-              <AddressBalance balance={balance} />
+              <AddressBalance balance={tokenBalance} />
             </InfoRow>
           )}
           {creator && (

@@ -13,7 +13,7 @@ const AllContracts: FC = () => {
     mapper
   );
 
-  document.title = `All contracts | Otterscan`;
+  document.title = `All contracts | WSO2`;
 
   return (
     <GenericContractSearchResult

@@ -13,7 +13,7 @@ const AllERC1167: FC = () => {
     mapper
   );
 
-  document.title = `ERC1167 Contracts | Otterscan`;
+  document.title = `ERC1167 Contracts | WSO2`;
 
   return (
     <GenericContractSearchResult

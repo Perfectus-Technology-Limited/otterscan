@@ -42,7 +42,7 @@ const AddressERC721Results: FC<AddressAwareComponentProps> = ({ address }) => {
     [results]
   );
 
-  document.title = `ERC721 Transfers | Otterscan`;
+  document.title = `ERC721 Transfers | WSO2`;
 
   return (
     <GenericTransactionSearchResult

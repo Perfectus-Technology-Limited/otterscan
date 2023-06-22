@@ -34,7 +34,7 @@ const BlockTransactions: React.FC = () => {
     PAGE_SIZE
   );
 
-  document.title = `Block #${blockNumber} Txns | Otterscan`;
+  document.title = `Block #${blockNumber} Txns | WSO2`;
 
   return (
     <StandardFrame>
